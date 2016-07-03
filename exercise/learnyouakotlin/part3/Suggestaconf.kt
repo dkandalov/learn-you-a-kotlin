@@ -1,17 +1,18 @@
 package learnyouakotlin.part3
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT
 import com.sun.net.httpserver.HttpServer
-import learnyouakotlin.solution.*
-import learnyouakotlin.solution.part1.Presenter
-import learnyouakotlin.solution.part1.Session
-import learnyouakotlin.solution.part2.array
-import learnyouakotlin.solution.part2.asJson
+import learnyouakotlin.part1.Presenter
+import learnyouakotlin.part1.Session
+import learnyouakotlin.part2.array
+import learnyouakotlin.part2.asJson
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 import java.net.HttpURLConnection.HTTP_OK
 import java.net.InetSocketAddress
 import java.security.SecureRandom
+import java.util.function.Function
 
 private val no_subtitle = null
 
@@ -65,13 +66,13 @@ fun main(args: Array<String>) {
     val server: HttpServer = HttpServer.create().apply {
         bind(InetSocketAddress("0.0.0.0", 8910), 0)
         createContext("/monday") { exchange ->
-            val schedule = rng.sample(learnyouakotlin.solution.part3.allSchedules(mondaySessions))
+            val schedule = rng.sample(allSchedules(mondaySessions))
 
             if (schedule != null) {
                 exchange.responseHeaders["Content-Type"] = "application/json"
                 exchange.sendResponseHeaders(HTTP_OK, 0)
                 exchange.responseBody.use { out ->
-                    objectMapper.writeValue(out, array(schedule, Session::asJson))
+                    objectMapper.writeValue(out, array(schedule, Function<Session, JsonNode> { it.asJson() }))
                 }
             }
             else {
