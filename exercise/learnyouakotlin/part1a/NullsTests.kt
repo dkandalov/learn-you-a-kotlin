@@ -3,7 +3,6 @@ package learnyouakotlin.part1a
 import learnyouakotlin.part1.Session
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 
 class NullsTests {
@@ -15,10 +14,10 @@ class NullsTests {
         assertEquals("for all the good it will do you", session.subtitle)
     }
 
-    @Test fun elvis() {
-        assertEquals("for all the good it will do you", subtitleOf(learnYouAKotlin))
-        assertNull(learnyouakotlin.solution.part1a.subtitleOf(null))
-    }
+//    @Test fun elvis() {
+//        assertEquals("for all the good it will do you", subtitleOf(learnYouAKotlin))
+//        assertNull(learnyouakotlin.solution.part1a.subtitleOf(null))
+//    }
 
     @Test fun questionmark_thingy() {
         assertEquals("for all the good it will do you", subtitleOrPrompt(learnYouAKotlin))
